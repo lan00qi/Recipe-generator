@@ -10,9 +10,9 @@ client = OpenAI(api_key = os.getenv("API_KEY"))
 
 system_prompt = """You are a recipe generator. The user will give you ingredients that they have at home and you will come up with recipes using those ingredients. You will be replying in a json format:
                     {
-                        "food_name1": [the list of steps to make]
-                        "food_name2": [the list of steps to make]
-                        "food_name3": [the list of steps to make]
+                        "Food Name1": [the list of steps to make]
+                        "Food Name2": [the list of steps to make]
+                        "Food Name3": [the list of steps to make]
                      }
 """
 
@@ -29,7 +29,9 @@ with st.form("form"):
                 {"role": "user", "content": user_prompt}
             ]
         )
-        for recipe in json.loads(response.choices[0].message.content):
-            st.write(recipe)
-
-            
+        recipe = json.loads(response.choices[0].message.content)
+        for food in recipe:
+            st.write(food)
+            for step in recipe[food]:
+                st.write(step)
+                st.write()
